@@ -1,5 +1,5 @@
 <template>
-  <el-menu :default-active="defaultActive" background-color="#545c64" :router="true" text-color="#fff" active-text-color="#ffd04b">
+  <el-menu :default-active="activeIndex" background-color="#545c64" :router="true" text-color="#fff" active-text-color="#ffd04b">
     <el-menu-item v-for="item in menuItems" :index="item['index']" :key="item['index']">
       <i :class="item['icon']"></i>
       <span slot="title">{{item['title']}}</span>
@@ -10,16 +10,17 @@
 <script>
 export default {
   name: 'windowMenu',
-  data() {
-    return {
-      defaultActive: '',
-      menuItems: [
-        {title: '版本管理', index: 'release', icon: 'el-icon-s-order'}
-      ]
+  computed: {
+    activeIndex() {
+      return this.$route.matched.slice(-1)[0]['path']
     }
   },
-  created() {
-    this.defaultActive = this.menuItems[0]['index']
+  data() {
+    return {
+      menuItems: [
+        {title: '版本管理', index: '/release', icon: 'el-icon-s-order'}
+      ]
+    }
   }
 }
 </script>

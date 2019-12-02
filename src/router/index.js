@@ -7,6 +7,7 @@ const routes = [
   {
     path: '/',
     name: 'app',
+    redirect: '/release',
     component: () => import('../views/index.vue'),
     children: [
       {
