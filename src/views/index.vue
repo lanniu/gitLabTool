@@ -48,14 +48,15 @@ export default {
       const init = this.$action['initStatus']()
 
       if (this.R.isNil(init)) {
-        this.$refs.initDialog.openDialog()
+        return this.$refs.initDialog.openDialog()
       }
       const defaultProjectId = this.$action['getGitConfig']('defaultProjectId')
 
       this.$action['selectProject'](defaultProjectId)
       this.$nextTick(() => {
         if (this.R.isNil(this.selectedProject)) {
-          this.$refs.setting.showSettingView('请选择默认的工程')
+          this.$action['initClear']()
+          return this.$refs.initDialog.openDialog()
         }
       })
     })
