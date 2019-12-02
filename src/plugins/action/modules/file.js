@@ -1,6 +1,6 @@
 import axios from '@/plugins/axios/index'
 import store from '@/store/index'
-import {GIT_CONFIG} from '@/config/git'
+import {getGitConfig} from '@/plugins/action/modules/utility'
 import {ResponseResult} from '@/plugins/action/responseResult'
 
 export const uploadFile = async function (projectId, file) {
@@ -10,7 +10,7 @@ export const uploadFile = async function (projectId, file) {
   store.commit('openWindowLoading')
   formData.append('file', file)
   try {
-    const {data} = await axios.post(`${GIT_CONFIG.baseUrl}/projects/${projectId}/uploads`, formData, {
+    const {data} = await axios.post(`${getGitConfig().baseUrl}/projects/${projectId}/uploads`, formData, {
       onUploadProgress: progressEvent => {
         let complete = (progressEvent.loaded / progressEvent.total * 100 | 0) + '%'
 

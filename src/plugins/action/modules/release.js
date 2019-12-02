@@ -1,6 +1,6 @@
 import axios from '@/plugins/axios/index'
 import store from '@/store/index'
-import {GIT_CONFIG} from '@/config/git'
+import {getGitConfig} from '@/plugins/action/modules/utility'
 import {ResponseResult} from '@/plugins/action/responseResult'
 
 export const deleteRelease = async function (projectId, tagName) {
@@ -8,7 +8,7 @@ export const deleteRelease = async function (projectId, tagName) {
 
   store.commit('openWindowLoading')
   try {
-    const {data} = await axios.delete(`${GIT_CONFIG.baseUrl}/projects/${projectId}/releases/${tagName}`)
+    const {data} = await axios.delete(`${getGitConfig().baseUrl}/projects/${projectId}/releases/${tagName}`)
 
     result.setSuccess(data)
   } catch (e) {
@@ -24,7 +24,7 @@ export const listReleases = async function (projectId) {
   store.commit('openWindowLoading')
 
   try {
-    const {data} = await axios.get(`${GIT_CONFIG.baseUrl}/projects/${projectId}/releases`)
+    const {data} = await axios.get(`${getGitConfig().baseUrl}/projects/${projectId}/releases`)
 
     result.setSuccess(data)
   } catch (e) {
@@ -39,7 +39,7 @@ export const createRelease = async function (projectId, releaseConfig) {
 
   store.commit('openWindowLoading')
   try {
-    const {data} = await axios.post(`${GIT_CONFIG.baseUrl}/projects/${projectId}/releases`, releaseConfig, {
+    const {data} = await axios.post(`${getGitConfig().baseUrl}/projects/${projectId}/releases`, releaseConfig, {
       header: {
         'Content-Type': 'application/json'
       }

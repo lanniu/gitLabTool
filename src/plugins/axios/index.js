@@ -1,5 +1,5 @@
 import axios from 'axios'
-import {GIT_CONFIG} from '@/config/git'
+import {getGitConfig} from '@/plugins/action/modules/utility'
 
 /**
  * 自定义请求拦截逻辑，可以处理权限，请求发送监控等
@@ -42,7 +42,7 @@ export function responseFailFunc(responseError) {
 
 let axiosInstance = axios.create({
   headers: {
-    'PRIVATE-TOKEN': GIT_CONFIG.privateToken
+    'PRIVATE-TOKEN': getGitConfig().privateToken
   }
 })
 

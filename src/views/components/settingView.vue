@@ -64,8 +64,8 @@ export default {
       if (this.callback instanceof Function) {
         this.callback(this.dataForm)
       } else {
-        this.$store.commit('setSelectedProject', this.dataForm['selectedProject'])
-        localStorage.setItem('defaultProjectId', this.dataForm['selectedProject']['id'])
+        this.$action['selectProject'](this.dataForm['selectedProject'])
+        this.$action['setGitConfig']('defaultProjectId',  this.dataForm['selectedProject']['id'])
       }
       this.dialogVisible = false
     }

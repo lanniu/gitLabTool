@@ -39,10 +39,10 @@ export default new Vuex.Store({
       state.windowLoading = false
     },
     setSelectedProject(state, project) {
-      if (Object.is('string', typeof project)) {
-        state.selectedProject = state.projects[project] || {}
+      if (Object.is('string', typeof project) || Object.is('number', typeof project)) {
+        state.selectedProject = state.projects[project]
       } else {
-        state.selectedProject = project || {}
+        state.selectedProject = project
       }
     },
     setProjects(state, projects) {

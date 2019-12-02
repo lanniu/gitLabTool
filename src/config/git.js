@@ -1,12 +1,7 @@
 const GIT_CONFIG = {
-  gitLabUrl: 'http://192.168.10.22',
-  privateToken: 'UotXbo2Z58wssaGSE3cZ'
+  gitLabAddr: 'http://192.168.10.22/',
+  apiAddr: '/api/v4',
+  privateToken: ''
 }
-
-Reflect.defineProperty(GIT_CONFIG, 'baseUrl', {
-  get() {
-    return `${GIT_CONFIG.gitLabUrl}/api/v4`
-  }
-})
 
 export {GIT_CONFIG}

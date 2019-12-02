@@ -7,16 +7,18 @@
     <div class="viewContainer">
       <router-view></router-view>
     </div>
+    <init-dialog ref="initDialog"></init-dialog>
   </div>
 </template>
 
 <script>
 import WindowMenu from '@/views/components/menu'
 import SettingView from '@/views/components/settingView'
+import InitDialog from '@/views/components/initDialog'
 
 export default {
   name: 'index',
-  components: {SettingView, WindowMenu},
+  components: {InitDialog, SettingView, WindowMenu},
   computed: {
     windowLoadingText() {
       return this.$store.getters.windowLoadingText
@@ -42,13 +44,22 @@ export default {
     }
     this.$store.commit('setProjects', result['data'])
 
-    const defaultProjectId = localStorage.getItem('defaultProjectId')
+    this.$nextTick(() => {
+      const init = this.$action['initStatus']()
 
-    if (this.R.isNil(defaultProjectId)) {
-      this.$refs.setting.showSettingView('请选择默认的工程')
-    } else {
-      this.$store.commit('setSelectedProject', defaultProjectId)
-    }
+      if (this.R.isNil(init)) {
+        this.$refs.initDialog.openDialog()
+      }
+      const defaultProjectId = this.$action['getGitConfig']('defaultProjectId')
+
+      this.$action['selectProject'](defaultProjectId)
+      console.log(this.selectedProject, defaultProjectId)
+      this.$nextTick(() => {
+        if (this.R.isNil(this.selectedProject)) {
+          this.$refs.setting.showSettingView('请选择默认的工程')
+        }
+      })
+    })
   }
 }
 </script>

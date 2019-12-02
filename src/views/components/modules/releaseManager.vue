@@ -47,7 +47,7 @@
 </template>
 
 <script>
-import {GIT_CONFIG} from '@/config/git'
+import {getGitConfig} from '@/plugins/action/modules/utility'
 
 export default {
   name: 'releaseManager',
@@ -146,7 +146,7 @@ export default {
           result.showErrorNotification()
           return false
         }
-        file['url'] = `${GIT_CONFIG.gitLabUrl}/${this.selectedProject['path_with_namespace']}${result['data']['url']}`
+        file['url'] = `${getGitConfig().gitLabAddr}/${this.selectedProject['path_with_namespace']}${result['data']['url']}`
       }
       result = await this.$action['createRelease'](projectId, releaseConfig)
       if (result.isFail()) {
