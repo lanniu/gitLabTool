@@ -36,7 +36,7 @@
           <el-input v-model="dataForm.fileName" placeholder="请输入产物名称"></el-input>
         </el-form-item>
         <el-form-item label="产物地址" prop="file">
-          <input type="file" @change="fileChangeHandler"/>
+          <input type="file" ref="fileInput" @change="fileChangeHandler"/>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="confirm">发布新版本</el-button>
@@ -157,6 +157,9 @@ export default {
       return true
     },
     updateFileName() {
+      if (this.R.isNil(this.dataForm.file)) {
+        return
+      }
       const {name} = this.dataForm.file
 
       this.dataForm.fileName = name
@@ -194,6 +197,7 @@ export default {
       this.drawer = true
       this.$nextTick(() => {
         this.$refs.form.resetFields()
+        this.$refs.fileInput.value = ''
       })
     }
   },
