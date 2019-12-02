@@ -20,7 +20,8 @@
 
       <span slot="footer" class="dialog-footer">
         <el-button size="small" @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" size="small" @click="confirm">确 定</el-button>
+        <el-button size="small" type="danger" @click="reset">重置工具</el-button>
+        <el-button size="small" type="primary" @click="confirm">确 定</el-button>
       </span>
     </el-dialog>
   </div>
@@ -43,7 +44,7 @@ export default {
   },
   data() {
     return {
-      title: '',
+      title: '设置',
       callback: null,
       dialogVisible: false,
       dataForm: {
@@ -52,20 +53,26 @@ export default {
     }
   },
   methods: {
-    showSettingView(title, callback) {
-      this.title = title || '设置'
+    showSettingView(callback) {
       this.callback = callback
       this.dialogVisible = true
     },
     initDataForm() {
       this.dataForm['selectedProject'] = this.$store.getters.selectedProject
     },
+    reset() {
+      this.$confirm('确定要重置工具吗？', '确认信息')
+        .then(() => {
+          this.$action['initClear']()
+          location.reload()
+        })
+    },
     confirm() {
       if (this.callback instanceof Function) {
         this.callback(this.dataForm)
       } else {
         this.$action['selectProject'](this.dataForm['selectedProject'])
-        this.$action['setGitConfig']('defaultProjectId',  this.dataForm['selectedProject']['id'])
+        this.$action['setGitConfig']('defaultProjectId', this.dataForm['selectedProject']['id'])
       }
       this.dialogVisible = false
     }

@@ -92,6 +92,7 @@ export default {
     confirm() {
       this.$action['saveGitConfig'](this.dataForm)
       this.$action['initFinish']()
+      this.$action['selectProject'](this.dataForm['defaultProjectId'])
       this.dialogVisible = false
     }
   }
