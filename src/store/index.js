@@ -6,7 +6,7 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     windowLoadingText: '',
-    windowLoading: true,
+    windowLoading: false,
     selectedProject: {},
     projects: {}
   },

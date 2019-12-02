@@ -83,6 +83,7 @@ export default {
           return
         }
         this.projects = result['data']
+        this.$store.commit('setProjects', this.projects)
       }
       this.active += 1
     },

@@ -36,6 +36,11 @@ export default {
     }
   },
   async mounted() {
+    const init = this.$action['initStatus']()
+
+    if (this.R.isNil(init)) {
+      return this.$refs.initDialog.openDialog()
+    }
     const result = await this.$action['listProject']()
 
     if (result.isFail()) {
@@ -45,11 +50,6 @@ export default {
     this.$store.commit('setProjects', result['data'])
 
     this.$nextTick(() => {
-      const init = this.$action['initStatus']()
-
-      if (this.R.isNil(init)) {
-        return this.$refs.initDialog.openDialog()
-      }
       const defaultProjectId = this.$action['getGitConfig']('defaultProjectId')
 
       this.$action['selectProject'](defaultProjectId)

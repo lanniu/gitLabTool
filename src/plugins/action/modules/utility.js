@@ -31,6 +31,7 @@ export const getGitConfig = function (key) {
   } catch (e) {
     initClear()
   }
+  localGitConfig = Object.assign({}, localGitConfig)
   Reflect.defineProperty(localGitConfig, 'baseUrl', {
     get() {
       return `${localGitConfig.gitLabAddr}/${localGitConfig.apiAddr}`.replace(/(?<!:)(\/){2,3}/g, '/')
