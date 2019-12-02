@@ -53,7 +53,6 @@ export default {
       const defaultProjectId = this.$action['getGitConfig']('defaultProjectId')
 
       this.$action['selectProject'](defaultProjectId)
-      console.log(this.selectedProject, defaultProjectId)
       this.$nextTick(() => {
         if (this.R.isNil(this.selectedProject)) {
           this.$refs.setting.showSettingView('请选择默认的工程')
