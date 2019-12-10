@@ -18,7 +18,7 @@
     <div class="releaseOptionContainer">
       <el-button class="pushReleaseButton" type="success" @click="openDrawer">发布新版本</el-button>
     </div>
-    <el-drawer title="发布新版本" :visible.sync="drawer" direction="rtl" size="50%">
+    <el-drawer title="发布新版本" :visible.sync="drawer" :wrapperClosable="false"  direction="rtl" size="50%">
       <el-form :model="dataForm" ref="form" :rules="rules" label-width="80px">
         <el-form-item label="版本名称" prop="name">
           <el-input v-model="dataForm.name" placeholder="请输入版本名称"></el-input>
