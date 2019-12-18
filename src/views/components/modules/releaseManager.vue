@@ -31,7 +31,7 @@
           <el-input v-model="dataForm.ref" placeholder="请输入分支名称"></el-input>
         </el-form-item>
         <el-form-item label="描述" prop="description">
-          <el-input v-model="dataForm.description" type="textarea" placeholder="请输入此版本的描述信息"></el-input>
+          <el-input v-model="dataForm.description" type="textarea" placeholder="请输入此版本的描述信息" :autosize="{ minRows: 8 }"></el-input>
         </el-form-item>
         <el-form-item label="产物名称" prop="fileName">
           <el-input v-model="dataForm.fileName" placeholder="请输入产物名称"></el-input>
@@ -72,10 +72,10 @@ export default {
       releases: [],
       drawer: false,
       dataForm: {
-        name: 'New release', // 版本名称
-        tag_name: '1.0.1', // 标签名称
+        name: '1.0.1-pre', // 版本名称
+        tag_name: '1.0.1-pre', // 标签名称
         ref: 'dev', // 分支名称
-        description: 'Super nice release', // 描述
+        description: '', // 描述
         fileName: '', // 产物名称
         file: '' // 产物地址
       },
@@ -202,11 +202,13 @@ export default {
       })
     },
     openDrawer() {
-      this.drawer = true
-      this.$nextTick(() => {
-        this.$refs.form.resetFields()
-        this.$refs.fileInput.value = ''
-      })
+      this.drawer = !this.drawer
+      if (this.drawer) {
+        this.$nextTick(() => {
+          this.$refs.form.resetFields()
+          this.$refs.fileInput.value = ''
+        })
+      }
     }
   },
   mounted() {
