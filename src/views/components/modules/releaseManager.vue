@@ -30,7 +30,7 @@
           <el-input v-model="dataForm.ref" placeholder="请输入分支名称"></el-input>
         </el-form-item>
         <el-form-item label="描述" prop="description">
-          <el-input v-model="dataForm.description" placeholder="请输入此版本的描述信息"></el-input>
+          <el-input v-model="dataForm.description" type="textarea" placeholder="请输入此版本的描述信息"></el-input>
         </el-form-item>
         <el-form-item label="产物名称" prop="fileName">
           <el-input v-model="dataForm.fileName" placeholder="请输入产物名称"></el-input>
