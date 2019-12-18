@@ -1,5 +1,5 @@
 <template>
-  <div class="releaseManagerContainer">
+  <div class="releaseManagerContainer" tabindex="1" @keydown.ctrl.shift.exact.78="openDrawer">
     <div class="releaseListContainer">
       <template v-if="releases.length <= 0">
         <span class="releaseEmptyInfo">暂无版本信息</span>
@@ -7,18 +7,19 @@
       <ul v-else>
         <template v-for="(release, index) in releases">
           <li class="releaseItem" :key="index">
-            {{release['name']}} - {{release['tag_name']}}
-            <el-button slot="reference" type="danger" class="releaseDeleteIcon" @click="deleteRelease(projectId,release['tag_name'])">
-              <i class="el-icon-close"></i>
-            </el-button>
+            <div class="releaseItemTitle">
+              {{release['name']}} - {{release['tag_name']}}
+              <el-button slot="reference" type="danger" class="releaseDeleteIcon" @click="deleteRelease(projectId,release['tag_name'])">
+                <i class="el-icon-close"></i>
+              </el-button>
+            </div>
+            <div class="releaseItemDesc" ref="desc">
+            </div>
           </li>
         </template>
       </ul>
     </div>
-    <div class="releaseOptionContainer">
-      <el-button class="pushReleaseButton" type="success" @click="openDrawer">发布新版本</el-button>
-    </div>
-    <el-drawer title="发布新版本" :visible.sync="drawer" :wrapperClosable="false"  direction="rtl" size="50%">
+    <el-drawer title="发布新版本" :visible.sync="drawer" :wrapperClosable="false" direction="rtl" size="50%">
       <el-form :model="dataForm" ref="form" :rules="rules" label-width="80px">
         <el-form-item label="版本名称" prop="name">
           <el-input v-model="dataForm.name" placeholder="请输入版本名称"></el-input>
@@ -48,6 +49,7 @@
 
 <script>
 import {getGitConfig} from '@/plugins/action/modules/utility'
+import MarkdownIt from 'markdown-it'
 
 export default {
   name: 'releaseManager',
@@ -66,6 +68,7 @@ export default {
   },
   data() {
     return {
+      md: null,
       releases: [],
       drawer: false,
       dataForm: {
@@ -132,6 +135,11 @@ export default {
         return
       }
       this.releases = result['data']
+      this.$nextTick(() => {
+        this.$refs.desc.forEach((dom, index) => {
+          dom.innerHTML = this.md.render(this.releases[index]['description'])
+        })
+      })
     },
     async createRelease(projectId, releaseConfig) {
       if (this.R.isNil(projectId)) {
@@ -202,6 +210,7 @@ export default {
     }
   },
   mounted() {
+    this.md = new MarkdownIt()
     this.listReleases(this.projectId)
   }
 }
@@ -217,6 +226,7 @@ export default {
     flex: 7;
     position: relative;
     border-right: 1px solid #e5e5e5;
+    overflow: auto;
 
     .releaseEmptyInfo {
       white-space: nowrap;
@@ -235,37 +245,45 @@ export default {
       margin: 0;
 
       .releaseItem {
-        font-family: "Times New Roman";
-        font-size: 20px;
-        padding: 10px 5px;
-        margin-bottom: 10px;
-        border-radius: 5px;
         display: block;
-        border: 1px solid #e5e5e5;
-        position: relative;
+        margin-bottom: 10px;
 
-        .releaseDeleteIcon {
-          position: absolute;
-          border-radius: 0 5px 5px 0;
-          background-color: #f56c6c;
-          right: 0;
-          top: 0;
-          height: 100%;
-          padding: 12px 6px;
+        .releaseItemTitle {
+          font-family: "Times New Roman";
+          font-size: 25px;
+          font-weight: 600;
+          padding: 10px 5px;
+          border-radius: 5px 5px 0 0;
+          border: 1px solid #e5e5e5;
+          border-bottom: none;
+          position: relative;
+
+          .releaseDeleteIcon {
+            position: absolute;
+            border-radius: 0 5px 0 0;
+            background-color: #f56c6c;
+            right: 0;
+            top: 0;
+            height: 100%;
+            padding: 12px 6px;
+          }
+        }
+
+        .releaseItemDesc {
+          border: 1px solid #e5e5e5;
+          font-size: 14px;
+
+          ul {
+            margin: 0 0 0 20px;
+            padding: 5px;
+
+            li {
+              list-style: outside;
+              margin-bottom: 2px;
+            }
+          }
         }
       }
-    }
-  }
-
-  .releaseOptionContainer {
-    position: relative;
-    flex: 2;
-
-    .pushReleaseButton {
-      position: relative;
-      left: 50%;
-      top: 50%;
-      transform: translate(-50%, -50%);
     }
   }
 
